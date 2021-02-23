@@ -9,7 +9,8 @@ const typeDefs =`
 
     type Link {
         id: ID!
-        feed: [Link]!
+        description: String!
+        url: String!
     }
     `
 
