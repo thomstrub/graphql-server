@@ -35,7 +35,7 @@ const resolvers = {
         deleteLink:(parent, args) => {
             let selectedLink = links.find(link => link.id === args.id);
             links.splice(selectedLink, 1);
-            return removedLink;
+            return selectedLink;
         }
     },
 }
