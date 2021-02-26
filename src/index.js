@@ -6,30 +6,20 @@ const path = require('path');
 const resolvers = {
     Query: {
         info: () => `This is the API of a Hackernews Clone`,
-        feed: () => links,
-        link: (root, {id}) => links.find(link => link.id === id)
+        feed: async (parent, args, context) => {
+            return context.prisma.link.findMany()
+        },
     },
     Mutation: {
-        post: (parent, args) => {
-            const link = {
-                id: `link-${idCount++}`,
-                description: args.description,
-                url: args.url,
-            }
-            links.push(link)
-            return link
+        post: (parent, args, context, info) => {
+            const newLink = context.prisma.link.create({
+                data: {
+                    url: args.url,
+                    description: args.description,
+                },
+            })
+            return newLink
         },
-        updateLink: (parent, args) => {
-            let selectedLink = links.find(link => link.id === args.id);
-            selectedLink.description = args.description;
-            selectedLink.url = args.url;
-            return selectedLink;
-        },
-        deleteLink:(parent, args) => {
-            let selectedLink = links.find(link => link.id === args.id);
-            links.splice(selectedLink, 1);
-            return selectedLink;
-        }
     },
 }
 
